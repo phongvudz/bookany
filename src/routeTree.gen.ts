@@ -11,22 +11,24 @@
 // Import Routes
 
 import { Route as rootRoute } from './routes/__root'
-import { Route as TermsImport } from './routes/terms'
-import { Route as PrivacyPolicyImport } from './routes/privacy-policy'
+import { Route as MerchantsImport } from './routes/merchants'
+import { Route as LayoutTermPolicyImport } from './routes/_layout-term-policy'
 import { Route as AuthImport } from './routes/_auth'
 import { Route as IndexImport } from './routes/index'
+import { Route as LayoutTermPolicyTermsImport } from './routes/_layout-term-policy/terms'
+import { Route as LayoutTermPolicyPrivacyPolicyImport } from './routes/_layout-term-policy/privacy-policy'
 import { Route as AuthSignUpImport } from './routes/_auth/sign-up'
 import { Route as AuthSignInImport } from './routes/_auth/sign-in'
 
 // Create/Update Routes
 
-const TermsRoute = TermsImport.update({
-  path: '/terms',
+const MerchantsRoute = MerchantsImport.update({
+  path: '/merchants',
   getParentRoute: () => rootRoute,
 } as any)
 
-const PrivacyPolicyRoute = PrivacyPolicyImport.update({
-  path: '/privacy-policy',
+const LayoutTermPolicyRoute = LayoutTermPolicyImport.update({
+  id: '/_layout-term-policy',
   getParentRoute: () => rootRoute,
 } as any)
 
@@ -39,6 +41,17 @@ const IndexRoute = IndexImport.update({
   path: '/',
   getParentRoute: () => rootRoute,
 } as any)
+
+const LayoutTermPolicyTermsRoute = LayoutTermPolicyTermsImport.update({
+  path: '/terms',
+  getParentRoute: () => LayoutTermPolicyRoute,
+} as any)
+
+const LayoutTermPolicyPrivacyPolicyRoute =
+  LayoutTermPolicyPrivacyPolicyImport.update({
+    path: '/privacy-policy',
+    getParentRoute: () => LayoutTermPolicyRoute,
+  } as any)
 
 const AuthSignUpRoute = AuthSignUpImport.update({
   path: '/sign-up',
@@ -62,12 +75,12 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthImport
       parentRoute: typeof rootRoute
     }
-    '/privacy-policy': {
-      preLoaderRoute: typeof PrivacyPolicyImport
+    '/_layout-term-policy': {
+      preLoaderRoute: typeof LayoutTermPolicyImport
       parentRoute: typeof rootRoute
     }
-    '/terms': {
-      preLoaderRoute: typeof TermsImport
+    '/merchants': {
+      preLoaderRoute: typeof MerchantsImport
       parentRoute: typeof rootRoute
     }
     '/_auth/sign-in': {
@@ -78,6 +91,14 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthSignUpImport
       parentRoute: typeof AuthImport
     }
+    '/_layout-term-policy/privacy-policy': {
+      preLoaderRoute: typeof LayoutTermPolicyPrivacyPolicyImport
+      parentRoute: typeof LayoutTermPolicyImport
+    }
+    '/_layout-term-policy/terms': {
+      preLoaderRoute: typeof LayoutTermPolicyTermsImport
+      parentRoute: typeof LayoutTermPolicyImport
+    }
   }
 }
 
@@ -86,8 +107,11 @@ declare module '@tanstack/react-router' {
 export const routeTree = rootRoute.addChildren([
   IndexRoute,
   AuthRoute.addChildren([AuthSignInRoute, AuthSignUpRoute]),
-  PrivacyPolicyRoute,
-  TermsRoute,
+  LayoutTermPolicyRoute.addChildren([
+    LayoutTermPolicyPrivacyPolicyRoute,
+    LayoutTermPolicyTermsRoute,
+  ]),
+  MerchantsRoute,
 ])
 
 /* prettier-ignore-end */

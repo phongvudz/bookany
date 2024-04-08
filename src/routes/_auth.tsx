@@ -2,10 +2,14 @@ import { Link, Outlet, createFileRoute } from '@tanstack/react-router'
 import { motion } from 'framer-motion'
 
 export const Route = createFileRoute('/_auth')({
-  component: () => (
+  component: LayoutAuth
+})
+
+function LayoutAuth() {
+  return (
     <div className='h-[100vh] w-full dark:bg-black bg-white  dark:bg-grid-white/[0.2] bg-grid-black/[0.2] relative flex items-center justify-center'>
       {/* Radial gradient for the container to give a faded look */}
-      <div className='absolute pointer-events-none inset-0 flex items-center justify-center dark:bg-black bg-white [mask-image:radial-gradient(ellipse_at_center,transparent_20%,black)]'></div>
+      <div className='absolute pointer-events-none inset-0 flex items-center justify-center dark:bg-black bg-white md:[mask-image:radial-gradient(ellipse_at_center,transparent_50%,black)] [mask-image:radial-gradient(ellipse_at_center,transparent_70%,black)]'></div>
       <motion.div
         initial={{ opacity: 0.0, y: 40 }}
         whileInView={{ opacity: 1, y: 0 }}
@@ -33,4 +37,4 @@ export const Route = createFileRoute('/_auth')({
       </motion.div>
     </div>
   )
-})
+}
